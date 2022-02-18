@@ -1,0 +1,32 @@
+#variables = df.columns[5:]
+
+# Рабочий
+
+df_new = df.query('week== 1 and utro0vecher1 == 1').reset_index()
+
+for variable in variables:
+  for i in range(1, 9):
+    for n in range(2):
+      name = str(variable) + '_' + str(i) + '_' + str(n)
+      df_new[name] = df.query('week== @i and utro0vecher1 == @n').reset_index()[variable]
+
+df_new.drop(variables, axis=1, inplace=True)
+df_new.drop('utro0vecher1', axis=1, inplace=True)
+df_new.drop('week', axis=1, inplace=True)
+df_new
+
+# Чтобы сохранить и утро и вечер: 
+df_new1 = df.query('week== 1').reset_index()
+
+for variable in variables:
+  for i in range(1, 9):
+    name = str(variable) + '_' + str(i)
+    df_new1[name] = df.query('week== @i').reset_index()[variable]
+
+df_new1.drop(variables, axis=1)
+
+#или этот
+joined_df = df_week1.merge(df_week2, on='index_to_align', how='outer', sort=False, suffixes=('', '_1'))
+joined_df = joined_df.drop(labels = ['subj_number_1', 'week_1',	'group_1'], axis = 1)
+joined_df = df_week2.merge(df_week3, on='index_to_align', how='outer', sort=False, suffixes=('', '_2'))
+joined_df = joined_df.drop(labels = ['subj_number_2', 'week_2',	'group_2'], axis = 1)
