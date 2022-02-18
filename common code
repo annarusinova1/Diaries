@@ -1,0 +1,82 @@
+from google.colab import files
+files.upload()
+import pandas as pd
+import numpy as np
+df = pd.read_csv('name.csv')
+
+#print(df.columns) 
+#df.info()
+#df.isnull().sum()
+
+df = df.rename(columns={'Отметка времени': 'vremya2','дата': 'vremya','пульс (удары/минуту), c помощью приложения приложения welltory': 'pulse', 
+'SDNN (Индекс вариабельности сердечного ритма (мсек), с помощью приложения welltory)': 'sdnn', 
+'Частота дыхания (число вдохов/выдохов в минуту)': 'breathingrate'})
+
+df = df.rename(columns={'Я чувствую себя уставшим': 'fatigue', 'Я чувствую себя полным сил': 'strength', 'Общее самочувствие': 'wellbeing',
+'Чувствую себя голодным': 'hunger', 'Чувствую себя здоровым': 'health', 'Чувствую боль' : 'pain', 'Настроение': 'mood'})
+
+df = df.rename(columns={'Отметка времени': 'vremya2','дата': 'vremya','пульс (удары/минуту), c помощью приложения приложения welltory': 'pulse', 'SDNN (Индекс вариабельности сердечного ритма (мсек), с помощью приложения welltory)': 'sdnn', 'Частота дыхания (число вдохов/выдохов в минуту)': 'breathingrate'})
+df = df.rename(columns={'Я чувствую себя уставшим': 'fatigue', 'Я чувствую себя полным сил': 'strength', 'Общее самочувствие': 'wellbeing', 'Чувствую себя голодным': 'hunger', 'Чувствую себя здоровым': 'health', 'Чувствую боль' : 'pain', 'Настроение': 'mood'})
+
+df = df.rename(columns={'1. доверие': 'trust','2. заинтересованность': 'anticipation', '3. грусть': 'sadness', '4. скука': 'boredom', '5. нежность': 'tenderness', '6. вдохновение': 'admiration', '7. страх': 'fear', '8. решительность': 'determination','9. обида': 'resentment','10. нервозность': 'nervousness', '11. стыд ': 'shame', '12. уверенность': 'confidence', '13. вина ': 'remorse', '14. тревога ': 'apprehension', '15. злость': 'anger', '16. умиротворение': 'serenity','17. внимание': 'vigilance','18. раздражение': 'irritation', '19. удивление': 'suprise', '20.  досада': 'annoyance', '21.  восторг': 'ecstasy', '22.  любовь': 'love', '23.  радость': 'joy'})
+df = df.rename(columns={'18. раздражение': 'irritation', '19. удивление': 'suprise', '20.  досада': 'annoyance', '21.  восторг': 'ecstasy', '22.  любовь': 'love', '23.  радость': 'joy'})
+df = df.rename(columns={'19. раздражение': 'irritation', '20. удивление': 'suprise', '21.  досада': 'annoyance', '22.  восторг': 'ecstasy', '23.  любовь': 'love', '24.  радость': 'joy'})
+
+#print(df.columns)
+
+df['vremya'] = pd.to_datetime(df['vremya'])
+df['vremya'] = df['vremya'].dt.strftime("%Y%m%d")
+df['vremya'] = df['vremya'].astype(str).astype(int)
+df.head(2)
+
+df = df.replace({'vremya' : { 20210519 : 1, 20210520 : 2, 20210521 : 3, 20210522 : 4, 20210523 : 5, 20210524 : 6, 20210525 : 7, 20210526 : 8,	20210527 : 9, 20210528 : 10,
+                        20210529 : 11, 20210530 : 12, 20210531 : 13, 20210601 : 14, 20210602 : 15, 20210603 : 16, 20210604 : 17, 20210605 : 18, 20210606 : 19,	20210607 : 20, 20210608 : 21,
+                        20210609 : 22, 20210610 : 23, 20201006: 23, 20210611 : 24, 20210612 : 25, 20210613 : 26, 20210614 : 27, 20210615 : 28,	20210616 : 29, 20210617 : 30,
+                        20210618 : 31, 20210619 : 32, 20210620 : 33, 20210621 : 34, 20210622 : 35, 20210623 : 36, 20210624 : 37,	20210625 : 38, 20210626 : 39,
+                        20210627 : 40, 20210628 : 41, 20210629 : 42, 20210630 : 43, 20210701 : 44, 20210702 : 45, 20210703 : 46,	20210704 : 47, 20210705 : 48,
+                        20210706 : 49, 20210707 : 50, 20210708 : 51,	20210709 : 52, 20210710 : 53, 20210711 : 54, 20210712 : 55, 20210713 : 56,	20210714 : 57,
+                        20210715 : 58, 20210716 : 59, 20210717 : 60, 20210718 : 61, 20210719 : 62, 20210720 : 63,
+                        
+                        20211905 : 1, 20212005 : 2, 20212105 : 3, 20212205 : 4, 20212305 : 5, 20212405 : 6, 20212505 : 7, 20212605 : 8,	20212705 : 9, 20212805 : 10,
+                        20212905 : 11, 20213005 : 12, 20213105 : 13, 20210106 : 14, 20210206 : 15, 20210306 : 16, 20210406 : 17, 20210506 : 18, 20210606 : 19,	20210706 : 20, 20210806 : 21,
+                        20210906 : 22, 20211006 : 23, 20211106 : 24, 20211206 : 25, 20211306 : 26, 20211406 : 27, 20211506 : 28,	20211606 : 29, 20211706 : 30,
+                        20211806 : 31, 20211906 : 32, 20212006 : 33, 20212106 : 34, 20212206 : 35, 20212306 : 36, 20212406 : 37,	20212506 : 38, 20212606 : 39,
+                        20212706 : 40, 20212806 : 41, 20212906 : 42, 20213006 : 43, 20210107 : 44, 20210207 : 45, 20210307 : 46,	20210407 : 47, 20210507 : 48,
+                        20210607 : 49, 20210707 : 50, 20210807 : 51,	20210907 : 52, 20211007 : 53, 20211107 : 54, 20211207 : 55, 20211307 : 56,	20211407 : 57,
+                        20211507 : 58, 20211607 : 59, 20211707 : 60, 20211807 : 61, 20211907 : 62, 20212007 : 63,
+                        
+                        20210105: 14, 20210205: 15}})
+
+df2 = df[['vremya','pulse','sdnn', 'breathingrate', 'fatigue', 'strength', 'wellbeing', 'hunger',
+          'health', 'pain', 'mood', 'trust','anticipation','sadness','boredom','tenderness',
+          'admiration','fear','determination','resentment','nervousness','shame','confidence',
+          'remorse','apprehension','anger', 'serenity', 'vigilance', 'irritation','suprise',
+          'annoyance', 'ecstasy','love','joy']]
+
+#для медитаторов
+
+df_stat = []
+for stolb in df2:
+    df_temp =[]
+    for i in range(1):
+        df_temp.append(df2.loc[(df2['vremya'] < 8), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 7) & (df2['vremya'] < 15), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 14) & (df2['vremya'] < 22), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 21) & (df2['vremya'] < 29), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 28) & (df2['vremya'] < 36), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 35) & (df2['vremya'] < 43), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 42) & (df2['vremya'] < 50), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 49) & (df2['vremya'] < 57), stolb].mean())
+        df_temp.append(df2.loc[(df2['vremya'] > 56), stolb].mean())
+    df_stat.append(df_temp)
+
+columns = ['vremya','pulse','sdnn', 'breathing rate', 'fatigue', 'strength', 'wellbeing', 'hunger','health', 'pain', 'mood', 'trust','anticipation','sadness','boredom','tenderness','admiration','fear','determination','resentment','nervousness','shame','confidence','remorse','apprehension','anger', 'serenity', 'vigilance', 'irritation','suprise', 'annoyance', 'ecstasy','love','joy']
+
+df_stat = pd.DataFrame(df_stat).T
+df_stat.columns = columns
+display(df_stat)
+
+
+from google.colab import drive
+drive.mount('/drive', force_remount=True)
+df_stat.to_csv('/drive/My Drive/folder_name/name.csv') 
