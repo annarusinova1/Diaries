@@ -1,1 +1,6 @@
-
+positivelist = ['trust','anticipation','tenderness', 'admiration','serenity','ecstasy','love', 'joy']
+negativelist = ['sadness', 'boredom','fear','resentment', 'nervousness','shame','remorse','apprehension','anger','irritation', 'annoyance']
+df['negativesum'] = 0
+for i in range(len(df)):
+  df.loc[i, 'positivesum'] = df.loc[i,positivelist].sum()
+  df.loc[i, 'negativesum'] = df.loc[i,negativelist].sum()
