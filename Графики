@@ -1,2 +1,46 @@
-ррр
-шшшш
+from google.colab import files
+files.upload()
+
+import pandas as pd
+import numpy as np
+df = pd.read_csv('dnevnikperevod16022.xlsx - Лист1.csv', sep = ';')
+
+float(df.loc[:, 'love'])
+
+#df.columns
+df['purchase'].astype(str).astype(int)
+df.info()
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os 
+data  = 'dnevnikperevod16022.xlsx - Лист1.csv'
+df=pd.read_csv(data,sep=';')
+df.columns = df.columns.str.lower()
+columns = df.columns
+df.info()
+
+df.columns
+
+#column = 'hr'
+#if True:
+for column in columns[5:]:
+    directory = column
+    parent_dir = "D:\\work\\HSE\\meditation\\experiment_2021\\data\\analysis\\plots_all_stages\\"
+    # сохранить на диск path = os.path.join(parent_dir, directory) 
+    # сделать папку с названием os.mkdir(path) 
+    for name in df['subj_name'].unique():
+      if name != 'Быковец':
+        plt.close('all')
+        group = str(df[df['subj_name'] == name]['group'].unique()[0])
+        title = (str(name) + '_' + column + '_' + group)
+        ytitle = column
+        sns.lineplot(data = df.query('subj_name == @name & utro0vecher1 == 1'), y = column, x = 'week', color = 'orange').set(title = title, xlabel = 'week', ylabel = ytitle)
+        sns.lineplot(data = df.query('subj_name == @name & utro0vecher1 == 0'), y = column, x = 'week', color = 'b').set(title = title, xlabel = 'week', ylabel = ytitle)
+        plt.legend(labels=['evening','morning'])
+        plt.show()
+        file_name = path +'\\' + name + '.jpg'
+        print(file_name)
+        plt.savefig(file_name)
+        
+        variables = df.columns[5:]
