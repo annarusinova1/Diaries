@@ -1,0 +1,11 @@
+!pip install mne
+import mne
+import numpy as np
+import scipy as sp
+import pandas as pd
+import scipy.signal
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+!ls "/content/drive/MyDrive/eegtime"
